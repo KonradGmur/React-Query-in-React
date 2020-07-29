@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
-import fetchPokemon from './fetchPokemon';
-import {useQuery} from 'react-query';
+import React, { useState } from "react";
+import fetchPokemon from "./fetchPokemon";
+import { useQuery } from "react-query";
 
-const Pokemon =({id}) =>{
-  const {data} = useQuery('pokemon', fetchPokemon )
-  return null;
+const Pokemon = ({ id }) => {
+  const { data: pokemon, error } = useQuery(["pokemon", { id }], fetchPokemon);
 
   return !pokemon ? (
     <div>{error}</div>
-  ) : ( 
+  ) : (
     <div>
       <h2>#{id}</h2>
       <h2>{pokemon.name}</h2>
@@ -17,15 +16,19 @@ const Pokemon =({id}) =>{
   );
 };
 
-export const PokemonPager =() =>{
-  const [id,setId] =useState(1);
+export const PokemonPager = () => {
+  const [id, setId] = useState(1);
 
-  return(
+  return (
     <div>
-      <button type="button" onClick ={() => setId(id !== 1 ? id-1)}> Previous </button>
-      <button type="button" onClick ={() => setId(id !== 250 ? id+1)}>Previous</button>
+      <button type="button" onClick={() => setId(id !== 1 ? id - 1 : 250)}>
+        Previous
+      </button>
+      <button type="button" onClick={() => setId(id !== 250 ? id + 1 : 250)}>
+        Previous
+      </button>
 
       <Pokemon id={id} />
     </div>
-  )
-}
+  );
+};
